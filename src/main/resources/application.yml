@@ -4,3 +4,14 @@ spring:
     username: root
     password: LZYfy1012
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.drugs.manage.entity
+
+logging:
+  level:
+    com:
+      drugs:
+        manage:
+          mapper: debug
