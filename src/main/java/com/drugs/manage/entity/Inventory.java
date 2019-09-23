@@ -5,10 +5,10 @@ package com.drugs.manage.entity;
  */
 public class Inventory {
     private Integer id;
-    private String code;
-    private String name;
-    private String model;
-    private String unit;
+    private String drugCode;
+    private String drugName;
+    private String drugModel;
+    private String drugUnit;
     private String warehouseNum;
     private String outgoingNum;
     private String inventoryNum;
@@ -20,38 +20,6 @@ public class Inventory {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public String getWarehouseNum() {
@@ -86,14 +54,46 @@ public class Inventory {
         this.remarks = remarks;
     }
 
+    public String getDrugName() {
+        return drugName;
+    }
+
+    public void setDrugName(String drugName) {
+        this.drugName = drugName;
+    }
+
+    public String getDrugCode() {
+        return drugCode;
+    }
+
+    public void setDrugCode(String drugCode) {
+        this.drugCode = drugCode;
+    }
+
+    public String getDrugModel() {
+        return drugModel;
+    }
+
+    public void setDrugModel(String drugModel) {
+        this.drugModel = drugModel;
+    }
+
+    public String getDrugUnit() {
+        return drugUnit;
+    }
+
+    public void setDrugUnit(String drugUnit) {
+        this.drugUnit = drugUnit;
+    }
+
     @Override
     public String toString() {
-        return "InventoryService{" +
+        return "Inventory{" +
                 "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", model='" + model + '\'' +
-                ", unit='" + unit + '\'' +
+                ", drugCode='" + drugCode + '\'' +
+                ", drugName='" + drugName + '\'' +
+                ", drugModel='" + drugModel + '\'' +
+                ", drugUnit='" + drugUnit + '\'' +
                 ", warehouseNum='" + warehouseNum + '\'' +
                 ", outgoingNum='" + outgoingNum + '\'' +
                 ", inventoryNum='" + inventoryNum + '\'' +

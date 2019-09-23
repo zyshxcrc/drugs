@@ -2,8 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.drugs.manage.mapper.InventoryMapper">
 
-    <select id="getInventoryList" resultType="com.drugs.manage.entity.Inventory">
-        SELECT * FROM inventory
+    <sql id="inventoryColumnsList">
+        <trim suffixOverrides=",">
+            <if test="item.drugCode != null">drugCode,</if>
+            <if test="item.drugName != null">drugName,</if>
+            <if test="item.drugModel != null">drugModel,</if>
+            <if test="item.drugUnit != null">drugUnit,</if>
+            <if test="item.warehouseNum != null">warehouseNum,</if>
+            <if test="item.outgoingNum != null">outgoingNum,</if>
+            <if test="item.inventoryNum != null">inventoryNum,</if>
+            <if test="item.remarks != null">remarks</if>
+        </trim>
+    </sql>
+    <sql id="inventoryValuesList">
+        <trim suffixOverrides=",">
+            <if test="item.drugCode != null">#{item.drugCode},</if>
+            <if test="item.drugName != null">#{item.drugName},</if>
+            <if test="item.drugModel != null">#{item.drugModel},</if>
+            <if test="item.drugUnit != null">#{item.drugUnit},</if>
+            <if test="item.warehouseNum != null">#{item.warehouseNum},</if>
+            <if test="item.outgoingNum != null">#{item.outgoingNum},</if>
+            <if test="item.inventoryNum != null">#{item.inventoryNum},</if>
+            <if test="item.remarks != null">#{item.remarks}</if>
+        </trim>
+    </sql>
+
+    <select id="getInventoryList" parameterType="map" resultType="com.drugs.manage.entity.Inventory">
+        SELECT * FROM inventory limit #{currIndex} , #{pageSize}
     </select>
 
+    <select id="getInventoryByCode" resultType="com.drugs.manage.entity.Inventory">
+        SELECT * FROM inventory where drugCode=#{drugCode}
+    </select>
+
+    <insert id="batchInsert" parameterType="com.drugs.manage.entity.Inventory" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        <foreach item="item" index="index" collection="list" separator=";">
+            insert into inventory(<include refid="inventoryColumnsList"/>)
+            VALUES(<include refid="inventoryValuesList"/>)
+        </foreach>
+    </insert>
+
+    <update id="updateInventory">
+        update inventory set warehouseNum=#{warehouseNum}, inventoryNum=#{inventoryNum}
+        where id =#{id}
+    </update>
+
+    <update id="batchUpdate">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update inventory
+            <set>
+                <if test="item.warehouseNum != null">warehouseNum=warehouseNum+#{item.warehouseNum},</if>
+                <if test="item.inventoryNum != null">inventoryNum=inventoryNum+#{item.inventoryNum}</if>
+            </set>
+            where drugCode = #{item.drugCode}
+        </foreach>
+    </update>
 </mapper>
