@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.drugs.manage.mapper.CompanyMapper">
+
+    <select id="getCompanyList" parameterType="map" resultType="com.drugs.manage.entity.Company">
+        SELECT * FROM company_list limit #{currIndex} , #{pageSize}
+    </select>
+
+    <select id="getCompanyById" resultType="com.drugs.manage.entity.Company">
+        SELECT * FROM company_list where id=#{id}
+    </select>
+
+    <update id="updateById">
+        update company_list set companyCode=#{companyCode}, companyName=#{companyName},
+        phone=#{phone}, address=#{address},
+        createDate=#{createDate}, remarks=#{remarks}
+        where id =#{id}
+    </update>
+
+    <insert id="insert">
+       insert into company_list(companyCode,companyName,phone,address,createDate,remarks)
+        values(#{companyCode},#{companyName},#{phone},#{address},#{createDate},#{remarks})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM company_list WHERE id = #{id}
+    </delete>
+</mapper>
