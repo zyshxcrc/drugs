@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.drugs.manage.mapper.ReceiverMapper">
+
+    <select id="getReceiverList" parameterType="map" resultType="com.drugs.manage.entity.Receiver">
+        SELECT * FROM receiver_list limit #{currIndex} , #{pageSize}
+    </select>
+
+    <select id="getReceiverById" resultType="com.drugs.manage.entity.Receiver">
+        SELECT * FROM receiver_list where id=#{id}
+    </select>
+
+    <update id="updateById">
+        update receiver_list set  receiverName=#{receiverName},
+        phone=#{phone}, address=#{address},
+        createDate=#{createDate}, remarks=#{remarks}
+        where id =#{id}
+    </update>
+
+    <insert id="insert">
+       insert into receiver_list(receiverName,phone,address,createDate,remarks)
+        values(#{receiverName},#{phone},#{address},#{createDate},#{remarks})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM receiver_list WHERE id = #{id}
+    </delete>
+</mapper>
