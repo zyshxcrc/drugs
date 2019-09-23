@@ -22,4 +22,6 @@ public interface InventoryMapper {
     int updateInventory(String warehouseNum,String inventoryNum,int id);
 
     int batchUpdate(List<Map> list);
+
+    int batchUpdateDelete(List<Map> list);
 }

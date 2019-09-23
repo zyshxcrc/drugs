@@ -36,4 +36,9 @@ public class WarehouseService {
     public int updateWarehouse(Warehouse warehouse){
         return  warehouseMapper.updateWarehouse(warehouse);
     }
+
+    @Transactional
+    public int batchDelete(List<Integer> list){
+        return warehouseMapper.batchDelete(list);
+    }
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("warehouse")
@@ -99,6 +100,35 @@ public class WarehouseController {
 
             warehouseService.updateWarehouse(warehouse);
             inventoryService.updateInventory(newWarehouseNum,newInventoryNum,inventory.getId());
+
+            ResultData resultData = new ResultData();
+            resultData.setResult(true);
+            resultData.setValue(null);
+            return resultData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
+    @RequestMapping("/batchDelete")
+    public ResultData batchDelete(@RequestBody List<Warehouse> list){
+        try {
+            List<Integer> idList = list.stream().map(Warehouse::getId).collect(Collectors.toList());
+            warehouseService.batchDelete(idList);
+
+            List<Map> inList = new ArrayList<>();
+            for(Warehouse i : list){
+                Map<String,String> map = new HashMap<>();
+                map.put("warehouseNum",i.getDrawNum());
+                map.put("inventoryNum",i.getDrawNum());
+                map.put("drugCode",i.getDrugCode());
+                inList.add(map);
+            }
+            inventoryService.batchUpdateDelete(inList);
 
             ResultData resultData = new ResultData();
             resultData.setResult(true);

@@ -57,4 +57,15 @@
             where drugCode = #{item.drugCode}
         </foreach>
     </update>
+
+    <update id="batchUpdateDelete">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update inventory
+            <set>
+                <if test="item.warehouseNum != null">warehouseNum=warehouseNum-#{item.warehouseNum},</if>
+                <if test="item.inventoryNum != null">inventoryNum=inventoryNum-#{item.inventoryNum}</if>
+            </set>
+            where drugCode = #{item.drugCode}
+        </foreach>
+    </update>
 </mapper>

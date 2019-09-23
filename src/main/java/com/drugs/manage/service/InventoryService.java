@@ -42,4 +42,8 @@ public class InventoryService {
     public int batchUpdate(List<Map> list){
         return  inventoryMapper.batchUpdate(list);
     }
+    @Transactional
+    public int batchUpdateDelete(List<Map> list){
+        return  inventoryMapper.batchUpdateDelete(list);
+    }
 }

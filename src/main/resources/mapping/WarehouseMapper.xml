@@ -55,4 +55,12 @@
             sendOrderNo=#{sendOrderNo}, remarks=#{remarks}
         where id =#{id}
     </update>
+
+    <delete id="batchDelete" parameterType="com.drugs.manage.entity.Warehouse">
+        delete from warehouse where id
+        in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>
