@@ -21,9 +21,18 @@ public class CompanyController {
     public ResultData getInventoryList(@RequestParam("currentPage") int currPage, @RequestParam("pageSize") int pageSize){
         try {
             ArrayList<Company> list = companyService.getCompanyList(currPage,pageSize);
+            int total = companyService.getCompanyCount();
+
             ResultData resultData = new ResultData();
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("list",list);
+
+            Map<String,Integer> pagination = new HashMap<>();
+            pagination.put("total",total);
+            pagination.put("pageSize",pageSize);
+            pagination.put("currentPage",currPage);
+            map.put("pagination",pagination);
+
             resultData.setResult(true);
             resultData.setValue(map);
             return resultData;

@@ -6,6 +6,10 @@
         SELECT * FROM company_list limit #{currIndex} , #{pageSize}
     </select>
 
+    <select id="getCompanyCount" parameterType="String" resultType="Integer">
+         select count(*) FROM company_list
+    </select>
+
     <select id="getCompanyById" resultType="com.drugs.manage.entity.Company">
         SELECT * FROM company_list where id=#{id}
     </select>

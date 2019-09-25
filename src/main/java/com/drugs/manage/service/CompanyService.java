@@ -26,6 +26,10 @@ public class CompanyService {
         return companyMapper.getCompanyById(id);
     }
 
+    public int getCompanyCount(){
+        return companyMapper.getCompanyCount();
+    }
+
     @Transactional
     public int insert(Company company){
         return companyMapper.insert(company);
