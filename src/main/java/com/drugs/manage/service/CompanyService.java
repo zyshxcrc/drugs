@@ -22,6 +22,10 @@ public class CompanyService {
         return companyMapper.getCompanyList(data);
     }
 
+    public ArrayList<Company> getAllCompanyList(){
+        return companyMapper.getAllCompanyList();
+    }
+
     public Company getCompanyById(int id){
         return companyMapper.getCompanyById(id);
     }

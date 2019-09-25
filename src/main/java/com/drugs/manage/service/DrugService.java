@@ -15,10 +15,20 @@ public class DrugService {
     @Autowired
     DrugMapper drugMapper;
 
-    public ArrayList<Drug> getDrugList(int currPage, int pageSize){
+    public ArrayList<Drug> getDrugList(int currPage, int pageSize, String drugName, String startDate, String endDate){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("currIndex", (currPage-1)*pageSize);
         data.put("pageSize", pageSize);
+
+        if(drugName!=null&&!drugName.equals("")){
+            data.put("drugName", drugName);
+        }
+        if(startDate!=null&&!startDate.equals("")){
+            data.put("startDate", startDate);
+        }
+        if(endDate!=null&&!endDate.equals("")){
+            data.put("endDate", endDate);
+        }
         return drugMapper.getDrugList(data);
     }
 
@@ -26,8 +36,19 @@ public class DrugService {
         return drugMapper.getDrugById(id);
     }
 
-    public int getDrugCount(){
-        return drugMapper.getDrugCount();
+    public int getDrugCount(String drugName, String startDate, String endDate){
+        Map<String, Object> data = new HashMap<String, Object>();
+
+        if(drugName!=null&&!drugName.equals("")){
+            data.put("drugName", drugName);
+        }
+        if(startDate!=null&&!startDate.equals("")){
+            data.put("startDate", startDate);
+        }
+        if(endDate!=null&&!endDate.equals("")){
+            data.put("endDate", endDate);
+        }
+        return drugMapper.getDrugCount(data);
     }
 
     @Transactional

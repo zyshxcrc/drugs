@@ -10,6 +10,8 @@ import java.util.Map;
 public interface CompanyMapper {
     ArrayList<Company> getCompanyList(Map<String,Object> data);
 
+    ArrayList<Company> getAllCompanyList();
+
     int getCompanyCount();
 
     Company getCompanyById(int id);

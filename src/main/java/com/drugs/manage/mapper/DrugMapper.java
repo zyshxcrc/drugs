@@ -12,7 +12,7 @@ public interface DrugMapper {
 
     Drug getDrugById(int id);
 
-    int getDrugCount();
+    int getDrugCount(Map<String, Object> data);
 
     int insert(Drug drug);
 

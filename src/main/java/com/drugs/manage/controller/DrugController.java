@@ -17,10 +17,14 @@ public class DrugController {
     DrugService drugService;
 
     @RequestMapping("/list")
-    public ResultData getDrugList(@RequestParam("currentPage") int currPage, @RequestParam("pageSize") int pageSize){
+    public ResultData getDrugList(@RequestParam("currentPage") int currPage,
+                                  @RequestParam("pageSize") int pageSize,
+                                  @RequestParam("drugName") String drugName,
+                                  @RequestParam("startDate") String startDate,
+                                  @RequestParam("endDate") String endDate){
         try {
-            ArrayList<Drug> list = drugService.getDrugList(currPage,pageSize);
-            int total = drugService.getDrugCount();
+            ArrayList<Drug> list = drugService.getDrugList(currPage,pageSize,drugName,startDate,endDate);
+            int total = drugService.getDrugCount(drugName,startDate,endDate);
 
             ResultData resultData = new ResultData();
             Map<String,Object> map = new HashMap<String, Object>();

@@ -12,21 +12,42 @@
         <result property="createDate" column="createDate"/>
         <result property="remarks" column="remarks"/>
         <association property="company" javaType="com.drugs.manage.entity.Company">
-            <id property="id" column="t_id"/>
+            <id property="id" column="c_id"/>
             <result property="companyName" column="companyName"/>
         </association>
     </resultMap>
 
     <select id="getDrugList" parameterType="map" resultMap="DrudResultMap">
-        SELECT * FROM drugs d, company_list t where d.companyId=t.id limit #{currIndex} , #{pageSize}
+        SELECT d.*,t.id c_id,t.companyCode, t.companyName, t.phone, t.address, t.createDate, t.remarks
+        FROM drugs d, company_list t where d.companyId=t.id
+        <if test="drugName!=null">
+            and d.drugName like '%${drugName}%'
+        </if>
+        <if test="startDate!=null">
+            and d.createDate &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null">
+            and d.createDate &lt;= #{endDate}
+        </if>
+        order by id desc limit #{currIndex} , #{pageSize}
     </select>
 
     <select id="getDrugCount" parameterType="String" resultType="Integer">
          select count(*) FROM drugs d, company_list t where d.companyId=t.id
+        <if test="drugName!=null">
+            and d.drugName like '%${drugName}%'
+        </if>
+        <if test="startDate!=null">
+            and d.createDate &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null">
+            and d.createDate &lt;= #{endDate}
+        </if>
     </select>
 
     <select id="getDrugById" resultMap="DrudResultMap">
-        SELECT * FROM drugs d, company_list t where d.companyId=t.id and d.id=#{id}
+        SELECT d.*,t.id c_id,t.companyCode, t.companyName, t.phone, t.address, t.createDate, t.remarks
+        FROM drugs d, company_list t where d.companyId=t.id and d.id=#{id}
     </select>
 
     <update id="updateById">

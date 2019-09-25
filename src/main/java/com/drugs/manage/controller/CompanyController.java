@@ -45,6 +45,27 @@ public class CompanyController {
         }
     }
 
+    @RequestMapping("/allList")
+    public ResultData getAllCompanyList(){
+        try {
+            ArrayList<Company> list = companyService.getAllCompanyList();
+
+            ResultData resultData = new ResultData();
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("list",list);
+
+            resultData.setResult(true);
+            resultData.setValue(map);
+            return resultData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
     @RequestMapping("getCompanyById")
     public ResultData getCompanyById(int id){
         try {
