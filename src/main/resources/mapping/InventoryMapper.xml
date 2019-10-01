@@ -81,6 +81,10 @@
         SELECT * FROM inventory where drugCode=#{drugCode}
     </select>
 
+    <select id="getInventoryByDrugId" resultType="com.drugs.manage.entity.Inventory">
+        SELECT * FROM inventory where drugId=#{drugId}
+    </select>
+
     <insert id="batchInsert" parameterType="com.drugs.manage.entity.Inventory" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
         <foreach item="item" index="index" collection="list" separator=";">
             insert into inventory(<include refid="inventoryColumnsList"/>)
@@ -90,6 +94,11 @@
 
     <update id="updateInventory">
         update inventory set warehouseNum=#{warehouseNum}, inventoryNum=#{inventoryNum}
+        where id =#{id}
+    </update>
+
+    <update id="updateInventoryOutgoing">
+        update inventory set outgoingNum=#{outgoingNum}, inventoryNum=#{inventoryNum}
         where id =#{id}
     </update>
 

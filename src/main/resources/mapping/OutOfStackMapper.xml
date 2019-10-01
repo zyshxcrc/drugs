@@ -33,35 +33,54 @@
         </trim>
     </sql>
 
-    <select id="getOutOfStackList" parameterType="map" resultType="com.drugs.manage.entity.OutOfStack">
-        SELECT * FROM out_of_stock d
-        <where>
-            <if test="drugName!=null">
-                and d.drugName like '%${drugName}%'
-            </if>
-            <if test="startDate!=null">
-                and d.drawTime &gt;= #{startDate}
-            </if>
-            <if test="endDate!=null">
-                and d.drawTime &lt;= #{endDate}
-            </if>
-        </where>
+    <resultMap type="com.drugs.manage.entity.OutOfStackReceiver" id="OutOfStackResultMap">
+        <id property="id" column="id"/>
+        <result property="drugId" column="drugId"/>
+        <result property="drugCode" column="drugCode"/>
+        <result property="drugName" column="drugName"/>
+        <result property="drugModel" column="drugModel"/>
+        <result property="drugUnit" column="drugUnit"/>
+        <result property="unitPrice" column="unitPrice"/>
+        <result property="money" column="money"/>
+        <result property="drawNum" column="drawNum"/>
+        <result property="drawTime" column="drawTime"/>
+        <result property="remarks" column="remarks"/>
+        <association property="receiver" javaType="com.drugs.manage.entity.Receiver">
+            <id property="id" column="c_id"/>
+            <result property="receiverName" column="receiverName"/>
+            <result property="phone" column="phone"/>
+            <result property="address" column="address"/>
+            <result property="createDate" column="createDate"/>
+            <result property="remarks" column="c_remarks"/>
+        </association>
+    </resultMap>
+
+    <select id="getOutOfStackList" parameterType="map" resultMap="OutOfStackResultMap">
+        SELECT d.*,t.id c_id,t.receiverName,t.phone,t.address,t.createDate,t.remarks c_remarks
+        FROM out_of_stock d, receiver_list t where d.receiver=t.id
+        <if test="drugName!=null">
+            and d.drugName like '%${drugName}%'
+        </if>
+        <if test="startDate!=null">
+            and d.drawTime &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null">
+            and d.drawTime &lt;= #{endDate}
+        </if>
         order by id desc limit #{currIndex} , #{pageSize}
     </select>
 
     <select id="getOutOfStackCount" parameterType="String" resultType="Integer">
-        select count(*) FROM out_of_stock d
-        <where>
-            <if test="drugName!=null">
-                and d.drugName like '%${drugName}%'
-            </if>
-            <if test="startDate!=null">
-                and d.drawTime &gt;= #{startDate}
-            </if>
-            <if test="endDate!=null">
-                and d.drawTime &lt;= #{endDate}
-            </if>
-        </where>
+        select count(*) FROM out_of_stock d, receiver_list t where d.receiver=t.id
+        <if test="drugName!=null">
+            and d.drugName like '%${drugName}%'
+        </if>
+        <if test="startDate!=null">
+            and d.drawTime &gt;= #{startDate}
+        </if>
+        <if test="endDate!=null">
+            and d.drawTime &lt;= #{endDate}
+        </if>
     </select>
 
     <insert id="batchInsert" parameterType="com.drugs.manage.entity.OutOfStack" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
@@ -70,4 +89,18 @@
             VALUES(<include refid="outOfStackValuesList"/>)
         </foreach>
     </insert>
+
+    <select id="getOutOfStackById" resultMap="OutOfStackResultMap">
+        SELECT d.*,t.id c_id,t.receiverName,t.phone,t.address,t.createDate,t.remarks c_remarks
+        FROM out_of_stock d, receiver_list t where d.receiver=t.id and d.id=#{id}
+    </select>
+
+    <update id="updateById">
+        update out_of_stock set  drugCode=#{drugCode},
+        drugName=#{drugName}, drugModel=#{drugModel},
+        drugUnit=#{drugUnit}, unitPrice=#{unitPrice},
+        receiver=#{receiver}, drawNum=#{drawNum},
+        drawTime=#{drawTime}, remarks=#{remarks}
+        where id =#{id}
+    </update>
 </mapper>

@@ -43,6 +43,10 @@ public class InventoryService {
         return inventoryMapper.getInventoryByCode(drugCode);
     }
 
+    public Inventory getInventoryByDrugId(int drugId){
+        return inventoryMapper.getInventoryByDrugId(drugId);
+    }
+
     @Transactional
     public int batchInsert(List<Inventory> list){
         return inventoryMapper.batchInsert(list);
@@ -50,6 +54,10 @@ public class InventoryService {
     @Transactional
     public int updateInventory(String warehouseNum,String inventoryNum,int id){
         return inventoryMapper.updateInventory(warehouseNum, inventoryNum, id);
+    }
+    @Transactional
+    public int updateInventoryOutgoing(String outgoingNum,String inventoryNum,int id){
+        return inventoryMapper.updateInventoryOutgoing(outgoingNum, inventoryNum, id);
     }
     @Transactional
     public int batchUpdate(List<Map> list){

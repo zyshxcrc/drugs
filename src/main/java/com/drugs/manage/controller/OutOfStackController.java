@@ -1,13 +1,13 @@
 package com.drugs.manage.controller;
 
-import com.drugs.manage.entity.OutOfStack;
-import com.drugs.manage.entity.ResultData;
-import com.drugs.manage.entity.Warehouse;
+import com.drugs.manage.entity.*;
 import com.drugs.manage.service.InventoryService;
 import com.drugs.manage.service.OutOfStackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ public class OutOfStackController {
                                        @RequestParam("startDate") String startDate,
                                        @RequestParam("endDate") String endDate){
         try {
-            ArrayList<OutOfStack> list = outOfStackService.getOutOfStackList(currPage, pageSize,drugName,startDate,endDate);
+            ArrayList<OutOfStackReceiver> list = outOfStackService.getOutOfStackList(currPage, pageSize,drugName,startDate,endDate);
             int total = outOfStackService.getOutOfStackCount(drugName,startDate,endDate);
 
             ResultData result = new ResultData();
@@ -57,8 +57,29 @@ public class OutOfStackController {
         }
     }
 
+    @RequestMapping("getItemById")
+    public ResultData getOutOfStackById(int id){
+        try {
+            OutOfStackReceiver outOfStackReceiver = outOfStackService.getOutOfStackById(id);
+            ResultData result = new ResultData();
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("outOfStackReceiver",outOfStackReceiver);
+
+            result.setResult(true);
+            result.setValue(map);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
     @RequestMapping("/batchInsert")
     @ResponseBody
+    @Transactional
     public ResultData batchInsert(@RequestBody List<OutOfStack> list){
         try {
             outOfStackService.batchInsert(list);
@@ -72,6 +93,38 @@ public class OutOfStackController {
                 newList.add(map);
             }
             inventoryService.batchUpdate(newList);
+
+            ResultData resultData = new ResultData();
+            resultData.setResult(true);
+            resultData.setValue(null);
+            return resultData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
+    @RequestMapping("update")
+    @ResponseBody
+    @Transactional
+    public ResultData updateById(@RequestBody OutOfStack outOfStack){
+        try {
+            OutOfStackReceiver item = outOfStackService.getOutOfStackById(outOfStack.getId());
+            int itemCode = item.getDrugId();
+            Inventory inventory = inventoryService.getInventoryByDrugId(itemCode);
+            BigInteger a = BigInteger.valueOf(Integer.parseInt(item.getDrawNum()));
+            BigInteger b = BigInteger.valueOf(Integer.parseInt(inventory.getInventoryNum()));
+            BigInteger c = BigInteger.valueOf(Integer.parseInt(inventory.getOutgoingNum()));
+            BigInteger d = BigInteger.valueOf(Integer.parseInt(outOfStack.getDrawNum()));
+
+            String newInventoryNum = a.subtract(d).add(b).toString();
+            String newOutgoingNum = d.subtract(a).add(c).toString();
+
+            outOfStackService.updateById(outOfStack);
+            inventoryService.updateInventoryOutgoing(newOutgoingNum,newInventoryNum,inventory.getId());
 
             ResultData resultData = new ResultData();
             resultData.setResult(true);

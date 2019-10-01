@@ -1,6 +1,7 @@
 package com.drugs.manage.service;
 
 import com.drugs.manage.entity.OutOfStack;
+import com.drugs.manage.entity.OutOfStackReceiver;
 import com.drugs.manage.mapper.OutOfStackMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class OutOfStackService {
     @Autowired
     private OutOfStackMapper outOfStackMapper;
 
-    public ArrayList<OutOfStack> getOutOfStackList(int currPage, int pageSize, String drugName, String startDate, String endDate){
+    public ArrayList<OutOfStackReceiver> getOutOfStackList(int currPage, int pageSize, String drugName, String startDate, String endDate){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("currIndex", (currPage-1)*pageSize);
         data.put("pageSize", pageSize);
@@ -53,8 +54,17 @@ public class OutOfStackService {
         return outOfStackMapper.getOutOfStackCount(data);
     }
 
+    public OutOfStackReceiver getOutOfStackById(int id){
+        return outOfStackMapper.getOutOfStackById(id);
+    }
+
     @Transactional
     public int batchInsert(List<OutOfStack> list){
         return outOfStackMapper.batchInsert(list);
+    }
+
+    @Transactional
+    public int updateById(OutOfStack outOfStack){
+        return outOfStackMapper.updateById(outOfStack);
     }
 }

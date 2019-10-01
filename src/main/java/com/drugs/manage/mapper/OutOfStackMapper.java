@@ -1,6 +1,7 @@
 package com.drugs.manage.mapper;
 
 import com.drugs.manage.entity.OutOfStack;
+import com.drugs.manage.entity.OutOfStackReceiver;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,9 +13,13 @@ import java.util.Map;
  */
 @Repository
 public interface OutOfStackMapper {
-    ArrayList<OutOfStack> getOutOfStackList(Map<String,Object> data);
+    ArrayList<OutOfStackReceiver> getOutOfStackList(Map<String,Object> data);
 
     int getOutOfStackCount(Map<String,Object> data);
 
     int batchInsert(List<OutOfStack> list);
+
+    OutOfStackReceiver getOutOfStackById(int id);
+
+    int updateById(OutOfStack outOfStack);
 }

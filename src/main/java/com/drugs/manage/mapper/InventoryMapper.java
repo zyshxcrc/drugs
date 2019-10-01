@@ -1,9 +1,9 @@
 package com.drugs.manage.mapper;
 
 import com.drugs.manage.entity.Inventory;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,11 @@ public interface InventoryMapper {
 
     Inventory getInventoryByCode(String drugCode);
 
+    Inventory getInventoryByDrugId(int drugId);
+
     int updateInventory(String warehouseNum,String inventoryNum,int id);
+
+    int updateInventoryOutgoing(@Param("outgoingNum") String outgoingNum, @Param("inventoryNum") String inventoryNum, @Param("id") int id);
 
     int batchUpdate(List<Map> list);
 

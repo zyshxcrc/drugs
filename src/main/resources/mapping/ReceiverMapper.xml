@@ -3,7 +3,26 @@
 <mapper namespace="com.drugs.manage.mapper.ReceiverMapper">
 
     <select id="getReceiverList" parameterType="map" resultType="com.drugs.manage.entity.Receiver">
-        SELECT * FROM receiver_list limit #{currIndex} , #{pageSize}
+        SELECT * FROM receiver_list d
+        <where>
+            <if test="receiverName!=null">
+                and d.receiverName like '%${receiverName}%'
+            </if>
+        </where>
+        limit #{currIndex} , #{pageSize}
+    </select>
+
+    <select id="getAllReceiverList" resultType="com.drugs.manage.entity.Receiver">
+        SELECT * FROM receiver_list
+    </select>
+
+    <select id="getReceiverCount" parameterType="String" resultType="Integer">
+        select count(*) FROM receiver_list d
+        <where>
+            <if test="receiverName!=null">
+                and d.receiverName like '%${receiverName}%'
+            </if>
+        </where>
     </select>
 
     <select id="getReceiverById" resultType="com.drugs.manage.entity.Receiver">

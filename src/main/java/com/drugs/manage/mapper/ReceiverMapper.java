@@ -10,6 +10,10 @@ import java.util.Map;
 public interface ReceiverMapper {
     ArrayList<Receiver> getReceiverList(Map<String, Object> data);
 
+    ArrayList<Receiver> getAllReceiverList();
+
+    int getReceiverCount(Map<String, Object> data);
+
     Receiver getReceiverById(int id);
 
     int insert(Receiver receiver);

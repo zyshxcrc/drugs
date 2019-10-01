@@ -15,11 +15,30 @@ public class ReceiverService {
     @Autowired
     ReceiverMapper receiverMapper;
 
-    public ArrayList<Receiver> getReceiverList(int currPage, int pageSize){
+    public ArrayList<Receiver> getReceiverList(int currPage, int pageSize, String receiverName){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("currIndex", (currPage-1)*pageSize);
         data.put("pageSize", pageSize);
+
+        if(receiverName!=null&&!receiverName.equals("")){
+            data.put("receiverName", receiverName);
+        }
+
         return receiverMapper.getReceiverList(data);
+    }
+
+    public ArrayList<Receiver> getAllReceiverList(){
+        return receiverMapper.getAllReceiverList();
+    }
+
+    public int getReceiverCount(String receiverName){
+        Map<String, Object> data = new HashMap<String, Object>();
+
+        if(receiverName!=null&&!receiverName.equals("")){
+            data.put("receiverName", receiverName);
+        }
+
+        return receiverMapper.getReceiverCount(data);
     }
 
     public Receiver getReceiverById(int id){

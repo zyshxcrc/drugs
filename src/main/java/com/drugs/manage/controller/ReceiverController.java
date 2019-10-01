@@ -19,12 +19,44 @@ public class ReceiverController {
     ReceiverService receiverService;
 
     @RequestMapping("/list")
-    public ResultData getReceiverList(@RequestParam("currentPage") int currPage, @RequestParam("pageSize") int pageSize){
+    public ResultData getReceiverList(@RequestParam("currentPage") int currPage,
+                                      @RequestParam("pageSize") int pageSize,
+                                      @RequestParam("receiverName") String receiverName){
         try {
-            ArrayList<Receiver> list = receiverService.getReceiverList(currPage,pageSize);
+            ArrayList<Receiver> list = receiverService.getReceiverList(currPage,pageSize,receiverName);
+            int total = receiverService.getReceiverCount(receiverName);
+
             ResultData resultData = new ResultData();
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("list",list);
+
+            Map<String,Integer> pagination = new HashMap<>();
+            pagination.put("total",total);
+            pagination.put("pageSize",pageSize);
+            pagination.put("currentPage",currPage);
+            map.put("pagination",pagination);
+
+            resultData.setResult(true);
+            resultData.setValue(map);
+            return resultData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
+    @RequestMapping("allList")
+    public ResultData getAllReceiverList(){
+        try {
+            ArrayList<Receiver> list = receiverService.getAllReceiverList();
+
+            ResultData resultData = new ResultData();
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("list",list);
+
             resultData.setResult(true);
             resultData.setValue(map);
             return resultData;
