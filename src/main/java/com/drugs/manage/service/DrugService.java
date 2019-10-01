@@ -32,6 +32,10 @@ public class DrugService {
         return drugMapper.getDrugList(data);
     }
 
+    public ArrayList<Drug> getAllDrugList(){
+        return drugMapper.getAllDrugList();
+    }
+
     public Drug getDrugById(int id){
         return drugMapper.getDrugById(id);
     }

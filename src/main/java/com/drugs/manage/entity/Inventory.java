@@ -5,14 +5,12 @@ package com.drugs.manage.entity;
  */
 public class Inventory {
     private Integer id;
-    private String drugCode;
-    private String drugName;
-    private String drugModel;
-    private String drugUnit;
+    private String drugId;
     private String warehouseNum;
     private String outgoingNum;
     private String inventoryNum;
     private String remarks;
+    private Drug drug;
 
     public Integer getId() {
         return id;
@@ -20,6 +18,14 @@ public class Inventory {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDrugId() {
+        return drugId;
+    }
+
+    public void setDrugId(String drugId) {
+        this.drugId = drugId;
     }
 
     public String getWarehouseNum() {
@@ -54,50 +60,24 @@ public class Inventory {
         this.remarks = remarks;
     }
 
-    public String getDrugName() {
-        return drugName;
+    public Drug getDrug() {
+        return drug;
     }
 
-    public void setDrugName(String drugName) {
-        this.drugName = drugName;
-    }
-
-    public String getDrugCode() {
-        return drugCode;
-    }
-
-    public void setDrugCode(String drugCode) {
-        this.drugCode = drugCode;
-    }
-
-    public String getDrugModel() {
-        return drugModel;
-    }
-
-    public void setDrugModel(String drugModel) {
-        this.drugModel = drugModel;
-    }
-
-    public String getDrugUnit() {
-        return drugUnit;
-    }
-
-    public void setDrugUnit(String drugUnit) {
-        this.drugUnit = drugUnit;
+    public void setDrug(Drug drug) {
+        this.drug = drug;
     }
 
     @Override
     public String toString() {
         return "Inventory{" +
                 "id=" + id +
-                ", drugCode='" + drugCode + '\'' +
-                ", drugName='" + drugName + '\'' +
-                ", drugModel='" + drugModel + '\'' +
-                ", drugUnit='" + drugUnit + '\'' +
+                ", drugId='" + drugId + '\'' +
                 ", warehouseNum='" + warehouseNum + '\'' +
                 ", outgoingNum='" + outgoingNum + '\'' +
                 ", inventoryNum='" + inventoryNum + '\'' +
                 ", remarks='" + remarks + '\'' +
+                ", drug=" + drug +
                 '}';
     }
 }

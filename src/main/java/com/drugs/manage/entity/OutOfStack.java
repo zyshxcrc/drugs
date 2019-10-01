@@ -1,6 +1,9 @@
 package com.drugs.manage.entity;
 
-public class Warehouse {
+/**
+ * Created by zyliu on 2019/10/1.
+ */
+public class OutOfStack {
     private int id;
     private int drugId;
     private String drugCode;
@@ -10,9 +13,8 @@ public class Warehouse {
     private String unitPrice;
     private String money;
     private String drawNum;
-    private String supplier;
+    private String receiver;
     private String drawTime;
-    private String sendOrderNo;
     private String remarks;
 
     public int getId() {
@@ -87,12 +89,12 @@ public class Warehouse {
         this.drawNum = drawNum;
     }
 
-    public String getSupplier() {
-        return supplier;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setSupplier(String supplier) {
-        this.supplier = supplier;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getDrawTime() {
@@ -101,14 +103,6 @@ public class Warehouse {
 
     public void setDrawTime(String drawTime) {
         this.drawTime = drawTime;
-    }
-
-    public String getSendOrderNo() {
-        return sendOrderNo;
-    }
-
-    public void setSendOrderNo(String sendOrderNo) {
-        this.sendOrderNo = sendOrderNo;
     }
 
     public String getRemarks() {
@@ -121,8 +115,9 @@ public class Warehouse {
 
     @Override
     public String toString() {
-        return "Warehouse{" +
+        return "OutOfStack{" +
                 "id=" + id +
+                ", drugId=" + drugId +
                 ", drugCode='" + drugCode + '\'' +
                 ", drugName='" + drugName + '\'' +
                 ", drugModel='" + drugModel + '\'' +
@@ -130,9 +125,8 @@ public class Warehouse {
                 ", unitPrice='" + unitPrice + '\'' +
                 ", money='" + money + '\'' +
                 ", drawNum='" + drawNum + '\'' +
-                ", supplier='" + supplier + '\'' +
+                ", receiver='" + receiver + '\'' +
                 ", drawTime='" + drawTime + '\'' +
-                ", sendOrderNo='" + sendOrderNo + '\'' +
                 ", remarks='" + remarks + '\'' +
                 '}';
     }

@@ -48,6 +48,27 @@ public class DrugController {
         }
     }
 
+    @RequestMapping("allList")
+    public ResultData getAllDrugList(){
+        try {
+            ArrayList<Drug> list = drugService.getAllDrugList();
+
+            ResultData resultData = new ResultData();
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("list",list);
+
+            resultData.setResult(true);
+            resultData.setValue(map);
+            return resultData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
     @RequestMapping("getDrugById")
     public ResultData getDrugById(int id){
         try {

@@ -1,7 +1,7 @@
 package com.drugs.manage.service;
 
-import com.drugs.manage.entity.Warehouse;
-import com.drugs.manage.mapper.WarehouseMapper;
+import com.drugs.manage.entity.OutOfStack;
+import com.drugs.manage.mapper.OutOfStackMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by zyliu on 2019/10/1.
+ */
 @Service
-public class WarehouseService {
+public class OutOfStackService {
     @Autowired
-    WarehouseMapper warehouseMapper;
+    private OutOfStackMapper outOfStackMapper;
 
-    public ArrayList<Warehouse> getWarehouseList(int currPage, int pageSize, String drugName, String startDate, String endDate){
+    public ArrayList<OutOfStack> getOutOfStackList(int currPage, int pageSize, String drugName, String startDate, String endDate){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("currIndex", (currPage-1)*pageSize);
         data.put("pageSize", pageSize);
@@ -30,10 +33,11 @@ public class WarehouseService {
         if(endDate!=null&&!endDate.equals("")){
             data.put("endDate", endDate);
         }
-        return warehouseMapper.getWarehouseList(data);
+
+        return outOfStackMapper.getOutOfStackList(data);
     }
 
-    public int getWarehouseCount(String drugName, String startDate, String endDate){
+    public int getOutOfStackCount(String drugName, String startDate, String endDate){
         Map<String, Object> data = new HashMap<String, Object>();
 
         if(drugName!=null&&!drugName.equals("")){
@@ -45,25 +49,12 @@ public class WarehouseService {
         if(endDate!=null&&!endDate.equals("")){
             data.put("endDate", endDate);
         }
-        return warehouseMapper.getWarehouseCount(data);
-    }
 
-    public Warehouse getWarehouseById(int id){
-        return warehouseMapper.getWarehouseById(id);
+        return outOfStackMapper.getOutOfStackCount(data);
     }
 
     @Transactional
-    public int batchInsert(List<Warehouse> list){
-        return warehouseMapper.batchInsert(list);
-    }
-
-    @Transactional
-    public int updateWarehouse(Warehouse warehouse){
-        return  warehouseMapper.updateWarehouse(warehouse);
-    }
-
-    @Transactional
-    public int batchDelete(List<Integer> list){
-        return warehouseMapper.batchDelete(list);
+    public int batchInsert(List<OutOfStack> list){
+        return outOfStackMapper.batchInsert(list);
     }
 }

@@ -25,12 +25,25 @@ public class WarehouseController {
     InventoryService inventoryService;
 
     @RequestMapping("list")
-    public ResultData getInventoryList(@RequestParam("currentPage") int currPage, @RequestParam("pageSize") int pageSize){
+    public ResultData getInventoryList(@RequestParam("currentPage") int currPage,
+                                       @RequestParam("pageSize") int pageSize,
+                                       @RequestParam("drugName") String drugName,
+                                       @RequestParam("startDate") String startDate,
+                                       @RequestParam("endDate") String endDate){
         try {
-            ArrayList<Warehouse> list = warehouseService.getWarehouseList(currPage, pageSize);
+            ArrayList<Warehouse> list = warehouseService.getWarehouseList(currPage, pageSize,drugName,startDate,endDate);
+            int total = warehouseService.getWarehouseCount(drugName,startDate,endDate);
+
             ResultData result = new ResultData();
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("list",list);
+
+            Map<String,Integer> pagination = new HashMap<>();
+            pagination.put("total",total);
+            pagination.put("pageSize",pageSize);
+            pagination.put("currentPage",currPage);
+            map.put("pagination",pagination);
+
             result.setResult(true);
             result.setValue(map);
             return result;
@@ -56,10 +69,10 @@ public class WarehouseController {
 
             List<Map> newList = new ArrayList<>();
             for(Warehouse i : list){
-                Map<String,String> map = new HashMap<>();
+                Map<String,Object> map = new HashMap<>();
                 map.put("warehouseNum",i.getDrawNum());
                 map.put("inventoryNum",i.getDrawNum());
-                map.put("drugCode",i.getDrugCode());
+                map.put("drugId",i.getDrugId());
                 newList.add(map);
             }
             inventoryService.batchUpdate(newList);

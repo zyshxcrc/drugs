@@ -19,11 +19,24 @@ public class InventoryService {
     @Autowired
     InventoryMapper inventoryMapper;
 
-    public ArrayList<Inventory> getInventoryList(int currPage, int pageSize){
+    public ArrayList<Inventory> getInventoryList(int currPage, int pageSize, String drugName){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("currIndex", (currPage-1)*pageSize);
         data.put("pageSize", pageSize);
+
+        if(drugName!=null&&!drugName.equals("")){
+            data.put("drugName", drugName);
+        }
         return inventoryMapper.getInventoryList(data);
+    }
+
+    public int getInventoryCount(String drugName){
+        Map<String, Object> data = new HashMap<String, Object>();
+
+        if(drugName!=null&&!drugName.equals("")){
+            data.put("drugName", drugName);
+        }
+        return inventoryMapper.getInventoryCount(data);
     }
 
     public Inventory getInventoryByCode(String drugCode){

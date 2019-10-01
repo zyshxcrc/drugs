@@ -27,8 +27,54 @@
         </trim>
     </sql>
 
-    <select id="getInventoryList" parameterType="map" resultType="com.drugs.manage.entity.Inventory">
-        SELECT * FROM inventory limit #{currIndex} , #{pageSize}
+    <resultMap type="com.drugs.manage.entity.Inventory" id="InventoryResultMap">
+        <id property="id" column="id"/>
+        <result property="drugId" column="drugId"/>
+        <result property="warehouseNum" column="warehouseNum"/>
+        <result property="outgoingNum" column="outgoingNum"/>
+        <result property="inventoryNum" column="inventoryNum"/>
+        <result property="remarks" column="remarks"/>
+        <association property="drug" javaType="com.drugs.manage.entity.Drug">
+            <id property="id" column="c_id"/>
+            <result property="drugCode" column="drugCode"/>
+            <result property="drugName" column="drugName"/>
+            <result property="drugModel" column="drugModel"/>
+            <result property="drugUnit" column="drugUnit"/>
+            <result property="unitPrice" column="unitPrice"/>
+            <result property="createDate" column="createDate"/>
+            <result property="remarks" column="remarks"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="allDrugsResultMap" type="com.drugs.manage.entity.Inventory">
+        <id property="id" column="id" />
+        <result property="drugCode" column="drugCode"/>
+        <result property="drugName" column="drugName"/>
+        <result property="drugModel" column="drugModel"/>
+        <result property="drugUnit" column="drugUnit"/>
+        <result property="unitPrice" column="unitPrice"/>
+        <result property="warehouseNum" column="warehouseNum"/>
+        <result property="outgoingNum" column="outgoingNum"/>
+        <result property="inventoryNum" column="inventoryNum"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+    <select id="getInventoryList" parameterType="map" resultMap="InventoryResultMap">
+        SELECT a.id id,b.drugCode drugCode,b.drugName drugName,b.drugModel drugModel,b.drugUnit drugUnit,b.unitPrice unitPrice,
+            a.warehouseNum warehouseNum,a.outgoingNum outgoingNum,a.inventoryNum inventoryNum,a.remarks remarks
+        FROM inventory a,drugs b where a.drugId = b.id
+        <if test="drugName!=null">
+            and b.drugName like '%${drugName}%'
+        </if>
+        order by id desc
+        limit #{currIndex} , #{pageSize}
+    </select>
+
+    <select id="getInventoryCount" parameterType="String" resultType="Integer">
+        select count(*) FROM inventory a,drugs b where a.drugId = b.id
+        <if test="drugName!=null">
+            and b.drugName like '%${drugName}%'
+        </if>
     </select>
 
     <select id="getInventoryByCode" resultType="com.drugs.manage.entity.Inventory">
@@ -52,9 +98,11 @@
             update inventory
             <set>
                 <if test="item.warehouseNum != null">warehouseNum=warehouseNum+#{item.warehouseNum},</if>
-                <if test="item.inventoryNum != null">inventoryNum=inventoryNum+#{item.inventoryNum}</if>
+                <if test="item.outgoingNum != null">outgoingNum=outgoingNum+#{item.outgoingNum},</if>
+                <if test="item.inventoryNum != null and item.warehouseNum != null">inventoryNum=inventoryNum+#{item.inventoryNum}</if>
+                <if test="item.inventoryNum != null and item.outgoingNum != null">inventoryNum=inventoryNum-#{item.inventoryNum}</if>
             </set>
-            where drugCode = #{item.drugCode}
+            where drugId = #{item.drugId}
         </foreach>
     </update>
 

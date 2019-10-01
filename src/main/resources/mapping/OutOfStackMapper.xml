@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.drugs.manage.mapper.WarehouseMapper">
+<mapper namespace="com.drugs.manage.mapper.OutOfStackMapper">
 
-    <sql id="warehouseColumnsList">
+    <sql id="outOfStackColumnsList">
         <trim suffixOverrides=",">
+            <if test="item.drugId != null">drugId,</if>
             <if test="item.drugCode != null">drugCode,</if>
             <if test="item.drugName != null">drugName,</if>
             <if test="item.drugModel != null">drugModel,</if>
@@ -11,14 +12,14 @@
             <if test="item.unitPrice != null">unitPrice,</if>
             <if test="item.money != null">money,</if>
             <if test="item.drawNum != null">drawNum,</if>
-            <if test="item.supplier != null">supplier,</if>
+            <if test="item.receiver != null">receiver,</if>
             <if test="item.drawTime != null">drawTime,</if>
-            <if test="item.sendOrderNo != null">sendOrderNo,</if>
             <if test="item.remarks != null">remarks</if>
         </trim>
     </sql>
-    <sql id="warehouseValuesList">
+    <sql id="outOfStackValuesList">
         <trim suffixOverrides=",">
+            <if test="item.drugId != null">#{item.drugId},</if>
             <if test="item.drugCode != null">#{item.drugCode},</if>
             <if test="item.drugName != null">#{item.drugName},</if>
             <if test="item.drugModel != null">#{item.drugModel},</if>
@@ -26,15 +27,14 @@
             <if test="item.unitPrice != null">#{item.unitPrice},</if>
             <if test="item.money != null">#{item.money},</if>
             <if test="item.drawNum != null">#{item.drawNum},</if>
-            <if test="item.supplier != null">#{item.supplier},</if>
+            <if test="item.receiver != null">#{item.receiver},</if>
             <if test="item.drawTime != null">#{item.drawTime},</if>
-            <if test="item.sendOrderNo != null">#{item.sendOrderNo},</if>
             <if test="item.remarks != null">#{item.remarks}</if>
         </trim>
     </sql>
 
-    <select id="getWarehouseList" parameterType="map" resultType="com.drugs.manage.entity.Warehouse">
-        SELECT * FROM warehouse d
+    <select id="getOutOfStackList" parameterType="map" resultType="com.drugs.manage.entity.OutOfStack">
+        SELECT * FROM out_of_stock d
         <where>
             <if test="drugName!=null">
                 and d.drugName like '%${drugName}%'
@@ -49,8 +49,8 @@
         order by id desc limit #{currIndex} , #{pageSize}
     </select>
 
-    <select id="getWarehouseCount" parameterType="String" resultType="Integer">
-        select count(*) FROM warehouse d
+    <select id="getOutOfStackCount" parameterType="String" resultType="Integer">
+        select count(*) FROM out_of_stock d
         <where>
             <if test="drugName!=null">
                 and d.drugName like '%${drugName}%'
@@ -64,30 +64,10 @@
         </where>
     </select>
 
-    <select id="getWarehouseById" resultType="com.drugs.manage.entity.Warehouse">
-        SELECT * FROM warehouse where id=#{id}
-    </select>
-
-    <insert id="batchInsert" parameterType="com.drugs.manage.entity.Warehouse" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    <insert id="batchInsert" parameterType="com.drugs.manage.entity.OutOfStack" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
         <foreach item="item" index="index" collection="list" separator=";">
-            insert into warehouse(<include refid="warehouseColumnsList"/>)
-            VALUES(<include refid="warehouseValuesList"/>)
+            insert into out_of_stock(<include refid="outOfStackColumnsList"/>)
+            VALUES(<include refid="outOfStackValuesList"/>)
         </foreach>
     </insert>
-
-    <update id="updateWarehouse" parameterType="com.drugs.manage.entity.Warehouse">
-        update warehouse set drugCode=#{drugCode}, drugName=#{drugName}, drugModel=#{drugModel},
-            drugUnit=#{drugUnit}, unitPrice=#{unitPrice}, money=#{money},
-            drawNum=#{drawNum}, supplier=#{supplier}, drawTime=#{drawTime},
-            sendOrderNo=#{sendOrderNo}, remarks=#{remarks}
-        where id =#{id}
-    </update>
-
-    <delete id="batchDelete" parameterType="com.drugs.manage.entity.Warehouse">
-        delete from warehouse where id
-        in
-        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-    </delete>
 </mapper>

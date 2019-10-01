@@ -1,9 +1,10 @@
 package com.drugs.manage.controller;
 
-import com.drugs.manage.entity.Inventory;
+import com.drugs.manage.entity.OutOfStack;
 import com.drugs.manage.entity.ResultData;
+import com.drugs.manage.entity.Warehouse;
 import com.drugs.manage.service.InventoryService;
-import org.apache.ibatis.annotations.Param;
+import com.drugs.manage.service.OutOfStackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,29 +14,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by zyliu on 2019/9/22.
+ * Created by zyliu on 2019/10/1.
  */
 @RestController
-@RequestMapping("/inventory")
-public class InventoryController {
+@RequestMapping("outOfStack")
+public class OutOfStackController {
+    @Autowired
+    private OutOfStackService outOfStackService;
+
     @Autowired
     private InventoryService inventoryService;
 
-    /**
-     * 分页查询库存列表
-     * @param currPage 当前页
-     * @param pageSize 每页显示数
-     * @return 库存列表
-     */
-    @RequestMapping("/list")
-    public ResultData getInventoryList(@RequestParam("currentPage") int currPage,
+    @RequestMapping("list")
+    public ResultData getOutOfStackList(@RequestParam("currentPage") int currPage,
                                        @RequestParam("pageSize") int pageSize,
-                                       @RequestParam("drugName") String drugName){
+                                       @RequestParam("drugName") String drugName,
+                                       @RequestParam("startDate") String startDate,
+                                       @RequestParam("endDate") String endDate){
         try {
-            ArrayList<Inventory> list = inventoryService.getInventoryList(currPage,pageSize,drugName);
-            int total = inventoryService.getInventoryCount(drugName);
+            ArrayList<OutOfStack> list = outOfStackService.getOutOfStackList(currPage, pageSize,drugName,startDate,endDate);
+            int total = outOfStackService.getOutOfStackCount(drugName,startDate,endDate);
 
-            ResultData resultData = new ResultData();
+            ResultData result = new ResultData();
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("list",list);
 
@@ -45,9 +45,9 @@ public class InventoryController {
             pagination.put("currentPage",currPage);
             map.put("pagination",pagination);
 
-            resultData.setResult(true);
-            resultData.setValue(map);
-            return resultData;
+            result.setResult(true);
+            result.setValue(map);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             ResultData resultData = new ResultData();
@@ -57,17 +57,22 @@ public class InventoryController {
         }
     }
 
-    /**
-     * 入库数据批量新增
-     * @param list 新增列表
-     * @return 1成功
-     */
     @RequestMapping("/batchInsert")
     @ResponseBody
-    public ResultData batchInsert(@RequestBody List<Inventory> list){
-        System.out.println(list);
+    public ResultData batchInsert(@RequestBody List<OutOfStack> list){
         try {
-            this.inventoryService.batchInsert(list);
+            outOfStackService.batchInsert(list);
+
+            List<Map> newList = new ArrayList<>();
+            for(OutOfStack i : list){
+                Map<String,Object> map = new HashMap<>();
+                map.put("outgoingNum",i.getDrawNum());
+                map.put("inventoryNum",i.getDrawNum());
+                map.put("drugId",i.getDrugId());
+                newList.add(map);
+            }
+            inventoryService.batchUpdate(newList);
+
             ResultData resultData = new ResultData();
             resultData.setResult(true);
             resultData.setValue(null);

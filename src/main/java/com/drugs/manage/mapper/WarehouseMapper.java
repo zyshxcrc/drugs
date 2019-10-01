@@ -11,6 +11,8 @@ import java.util.Map;
 public interface WarehouseMapper {
     ArrayList<Warehouse> getWarehouseList(Map<String,Object> data);
 
+    int getWarehouseCount(Map<String,Object> data);
+
     int batchInsert(List<Warehouse> list);
 
     int updateWarehouse(Warehouse warehouse);

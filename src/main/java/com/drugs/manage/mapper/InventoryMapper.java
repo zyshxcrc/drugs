@@ -15,6 +15,8 @@ import java.util.Map;
 public interface InventoryMapper {
     ArrayList<Inventory> getInventoryList(Map<String,Object> data);
 
+    int getInventoryCount(Map<String,Object> data);
+
     int batchInsert(List<Inventory> list);
 
     Inventory getInventoryByCode(String drugCode);

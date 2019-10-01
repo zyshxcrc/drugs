@@ -10,6 +10,8 @@ import java.util.Map;
 public interface DrugMapper {
     ArrayList<Drug> getDrugList(Map<String, Object> data);
 
+    ArrayList<Drug> getAllDrugList();
+
     Drug getDrugById(int id);
 
     int getDrugCount(Map<String, Object> data);
