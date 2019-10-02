@@ -15,10 +15,14 @@ public class CompanyService {
     @Autowired
     CompanyMapper companyMapper;
 
-    public ArrayList<Company> getCompanyList(int currPage, int pageSize){
+    public ArrayList<Company> getCompanyList(int currPage, int pageSize, String companyName){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("currIndex", (currPage-1)*pageSize);
         data.put("pageSize", pageSize);
+
+        if(companyName!=null&&!companyName.equals("")){
+            data.put("companyName", companyName);
+        }
         return companyMapper.getCompanyList(data);
     }
 
@@ -30,8 +34,8 @@ public class CompanyService {
         return companyMapper.getCompanyById(id);
     }
 
-    public int getCompanyCount(){
-        return companyMapper.getCompanyCount();
+    public int getCompanyCount(String companyName){
+        return companyMapper.getCompanyCount(companyName);
     }
 
     @Transactional

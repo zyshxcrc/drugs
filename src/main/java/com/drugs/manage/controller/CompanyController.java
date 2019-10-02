@@ -18,10 +18,12 @@ public class CompanyController {
     CompanyService companyService;
 
     @RequestMapping("/list")
-    public ResultData getInventoryList(@RequestParam("currentPage") int currPage, @RequestParam("pageSize") int pageSize){
+    public ResultData getInventoryList(@RequestParam("currentPage") int currPage,
+                                       @RequestParam("pageSize") int pageSize,
+                                       @RequestParam("companyName") String companyName){
         try {
-            ArrayList<Company> list = companyService.getCompanyList(currPage,pageSize);
-            int total = companyService.getCompanyCount();
+            ArrayList<Company> list = companyService.getCompanyList(currPage,pageSize,companyName);
+            int total = companyService.getCompanyCount(companyName);
 
             ResultData resultData = new ResultData();
             Map<String,Object> map = new HashMap<String, Object>();

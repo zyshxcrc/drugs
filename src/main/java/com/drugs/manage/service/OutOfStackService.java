@@ -20,13 +20,16 @@ public class OutOfStackService {
     @Autowired
     private OutOfStackMapper outOfStackMapper;
 
-    public ArrayList<OutOfStackReceiver> getOutOfStackList(int currPage, int pageSize, String drugName, String startDate, String endDate){
+    public ArrayList<OutOfStackReceiver> getOutOfStackList(int currPage, int pageSize, String drugName, String receiverName, String startDate, String endDate){
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("currIndex", (currPage-1)*pageSize);
         data.put("pageSize", pageSize);
 
         if(drugName!=null&&!drugName.equals("")){
             data.put("drugName", drugName);
+        }
+        if(receiverName!=null&&!receiverName.equals("")){
+            data.put("receiverName", receiverName);
         }
         if(startDate!=null&&!startDate.equals("")){
             data.put("startDate", startDate);
@@ -38,11 +41,14 @@ public class OutOfStackService {
         return outOfStackMapper.getOutOfStackList(data);
     }
 
-    public int getOutOfStackCount(String drugName, String startDate, String endDate){
+    public int getOutOfStackCount(String drugName, String receiverName, String startDate, String endDate){
         Map<String, Object> data = new HashMap<String, Object>();
 
         if(drugName!=null&&!drugName.equals("")){
             data.put("drugName", drugName);
+        }
+        if(receiverName!=null&&!receiverName.equals("")){
+            data.put("receiverName", receiverName);
         }
         if(startDate!=null&&!startDate.equals("")){
             data.put("startDate", startDate);

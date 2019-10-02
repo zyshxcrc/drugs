@@ -61,19 +61,28 @@
         <if test="drugName!=null">
             and d.drugName like '%${drugName}%'
         </if>
+        <if test="receiverName!=null">
+            and t.receiverName like '%${receiverName}%'
+        </if>
         <if test="startDate!=null">
             and d.drawTime &gt;= #{startDate}
         </if>
         <if test="endDate!=null">
             and d.drawTime &lt;= #{endDate}
         </if>
-        order by id desc limit #{currIndex} , #{pageSize}
+        order by id desc
+        <if test="currIndex!=0">
+          limit #{currIndex} , #{pageSize}
+        </if>
     </select>
 
     <select id="getOutOfStackCount" parameterType="String" resultType="Integer">
         select count(*) FROM out_of_stock d, receiver_list t where d.receiver=t.id
         <if test="drugName!=null">
             and d.drugName like '%${drugName}%'
+        </if>
+        <if test="receiverName!=null">
+            and t.receiverName like '%${receiverName}%'
         </if>
         <if test="startDate!=null">
             and d.drawTime &gt;= #{startDate}

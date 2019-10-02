@@ -3,7 +3,13 @@
 <mapper namespace="com.drugs.manage.mapper.CompanyMapper">
 
     <select id="getCompanyList" parameterType="map" resultType="com.drugs.manage.entity.Company">
-        SELECT * FROM company_list limit #{currIndex} , #{pageSize}
+        SELECT * FROM company_list d
+        <where>
+            <if test="companyName!=null">
+                and d.companyName like '%${companyName}%'
+            </if>
+        </where>
+        limit #{currIndex} , #{pageSize}
     </select>
 
     <select id="getAllCompanyList" resultType="com.drugs.manage.entity.Company">
@@ -11,7 +17,12 @@
     </select>
 
     <select id="getCompanyCount" parameterType="String" resultType="Integer">
-         select count(*) FROM company_list
+         select count(*) FROM company_list d
+        <where>
+            <if test="companyName!=null">
+                and d.companyName like '%${companyName}%'
+            </if>
+        </where>
     </select>
 
     <select id="getCompanyById" resultType="com.drugs.manage.entity.Company">
