@@ -64,7 +64,7 @@
         where id =#{id}
     </update>
 
-    <insert id="insert">
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
        insert into drugs(drugCode,drugName,drugModel,drugUnit,unitPrice,companyId,createDate,remarks)
         values(#{drugCode},#{drugName},#{drugModel},
         #{drugUnit},#{unitPrice},#{company.id},#{createDate},#{remarks})

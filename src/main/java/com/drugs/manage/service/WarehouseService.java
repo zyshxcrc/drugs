@@ -66,4 +66,9 @@ public class WarehouseService {
     public int batchDelete(List<Integer> list){
         return warehouseMapper.batchDelete(list);
     }
+
+    @Transactional
+    public int deleteById(int id){
+        return warehouseMapper.deleteById(id);
+    }
 }

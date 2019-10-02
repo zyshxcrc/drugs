@@ -56,6 +56,27 @@ public class WarehouseController {
         }
     }
 
+    @RequestMapping("getItemById")
+    public ResultData getWarehouseById(int id){
+        try {
+            Warehouse warehouse = warehouseService.getWarehouseById(id);
+
+            ResultData result = new ResultData();
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("warehouse",warehouse);
+
+            result.setResult(true);
+            result.setValue(map);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
     /**
      * 入库数据批量新增
      * @param list 新增列表
@@ -63,6 +84,7 @@ public class WarehouseController {
      */
     @RequestMapping("/batchInsert")
     @ResponseBody
+    @Transactional
     public ResultData batchInsert(@RequestBody List<Warehouse> list){
         try {
             warehouseService.batchInsert(list);
@@ -101,8 +123,8 @@ public class WarehouseController {
     public ResultData updateWarehouse(@RequestBody Warehouse warehouse){
         try {
             Warehouse item = warehouseService.getWarehouseById(warehouse.getId());
-            String itemCode = item.getDrugCode();
-            Inventory inventory = inventoryService.getInventoryByCode(itemCode);
+            int itemCode = item.getDrugId();
+            Inventory inventory = inventoryService.getInventoryByDrugId(itemCode);
             BigInteger a = BigInteger.valueOf(Integer.parseInt(item.getDrawNum()));
             BigInteger b = BigInteger.valueOf(Integer.parseInt(inventory.getInventoryNum()));
             BigInteger c = BigInteger.valueOf(Integer.parseInt(inventory.getWarehouseNum()));
@@ -142,6 +164,37 @@ public class WarehouseController {
                 inList.add(map);
             }
             inventoryService.batchUpdateDelete(inList);
+
+            ResultData resultData = new ResultData();
+            resultData.setResult(true);
+            resultData.setValue(null);
+            return resultData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
+
+    @RequestMapping("deleteById")
+    @Transactional
+    public ResultData deleteById(int id){
+        try {
+            Warehouse item = warehouseService.getWarehouseById(id);
+            int itemCode = item.getDrugId();
+            Inventory inventory = inventoryService.getInventoryByDrugId(itemCode);
+            BigInteger a = BigInteger.valueOf(Integer.parseInt(item.getDrawNum()));
+            BigInteger b = BigInteger.valueOf(Integer.parseInt(inventory.getInventoryNum()));
+            BigInteger c = BigInteger.valueOf(Integer.parseInt(inventory.getWarehouseNum()));
+            BigInteger d = BigInteger.valueOf(0);
+
+            String newInventoryNum = d.subtract(a).add(b).toString();
+            String newWarehouseNum = d.subtract(a).add(c).toString();
+
+            warehouseService.deleteById(id);
+            inventoryService.updateInventory(newWarehouseNum,newInventoryNum,inventory.getId());
 
             ResultData resultData = new ResultData();
             resultData.setResult(true);

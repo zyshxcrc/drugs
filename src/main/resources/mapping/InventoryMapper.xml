@@ -125,4 +125,10 @@
             where drugCode = #{item.drugCode}
         </foreach>
     </update>
+
+    <insert id="insert">
+        insert into inventory(drugId,warehouseNum,outgoingNum,inventoryNum,remarks)
+        values(#{drugId},#{warehouseNum},#{outgoingNum},
+        #{inventoryNum},#{remarks})
+    </insert>
 </mapper>

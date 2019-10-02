@@ -1,9 +1,12 @@
 package com.drugs.manage.controller;
 
 import com.drugs.manage.entity.Drug;
+import com.drugs.manage.entity.Inventory;
 import com.drugs.manage.entity.ResultData;
 import com.drugs.manage.service.DrugService;
+import com.drugs.manage.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,6 +18,9 @@ import java.util.Map;
 public class DrugController {
     @Autowired
     DrugService drugService;
+
+    @Autowired
+    InventoryService inventoryService;
 
     @RequestMapping("/list")
     public ResultData getDrugList(@RequestParam("currentPage") int currPage,
@@ -90,9 +96,19 @@ public class DrugController {
 
     @RequestMapping("insert")
     @ResponseBody
+    @Transactional
     public ResultData insert(@RequestBody Drug drug){
         try {
-            drugService.insert(drug);
+            int id = drugService.insert(drug);
+
+            Inventory inventory = new Inventory();
+            inventory.setDrugId(String.valueOf(drug.getId()));
+            inventory.setInventoryNum("0");
+            inventory.setWarehouseNum("0");
+            inventory.setOutgoingNum("0");
+            inventory.setRemarks("");
+            inventory.setDrug(null);
+            inventoryService.insert(inventory);
 
             ResultData resultData = new ResultData();
             resultData.setResult(true);

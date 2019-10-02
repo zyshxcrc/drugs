@@ -67,4 +67,9 @@ public class OutOfStackService {
     public int updateById(OutOfStack outOfStack){
         return outOfStackMapper.updateById(outOfStack);
     }
+
+    @Transactional
+    public int deleteById(int id){
+        return outOfStackMapper.deleteById(id);
+    }
 }

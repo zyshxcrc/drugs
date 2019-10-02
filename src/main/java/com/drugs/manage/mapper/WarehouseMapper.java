@@ -20,4 +20,6 @@ public interface WarehouseMapper {
     int batchDelete(List<Integer> list);
 
     Warehouse getWarehouseById(int id);
+
+    int deleteById(int id);
 }

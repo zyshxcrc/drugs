@@ -100,7 +100,12 @@
         drugName=#{drugName}, drugModel=#{drugModel},
         drugUnit=#{drugUnit}, unitPrice=#{unitPrice},
         receiver=#{receiver}, drawNum=#{drawNum},
+        money=#{money},
         drawTime=#{drawTime}, remarks=#{remarks}
         where id =#{id}
     </update>
+
+    <delete id="deleteById">
+        DELETE FROM out_of_stock WHERE id = #{id}
+    </delete>
 </mapper>

@@ -138,4 +138,35 @@ public class OutOfStackController {
             return resultData;
         }
     }
+
+    @RequestMapping("deleteById")
+    @Transactional
+    public ResultData deleteById(int id){
+        try {
+            OutOfStackReceiver item = outOfStackService.getOutOfStackById(id);
+            int itemCode = item.getDrugId();
+            Inventory inventory = inventoryService.getInventoryByDrugId(itemCode);
+            BigInteger a = BigInteger.valueOf(Integer.parseInt(item.getDrawNum()));
+            BigInteger b = BigInteger.valueOf(Integer.parseInt(inventory.getInventoryNum()));
+            BigInteger c = BigInteger.valueOf(Integer.parseInt(inventory.getOutgoingNum()));
+            BigInteger d = BigInteger.valueOf(0);
+
+            String newInventoryNum = a.subtract(d).add(b).toString();
+            String newOutgoingNum = d.subtract(a).add(c).toString();
+
+            outOfStackService.deleteById(id);
+            inventoryService.updateInventoryOutgoing(newOutgoingNum,newInventoryNum,inventory.getId());
+
+            ResultData resultData = new ResultData();
+            resultData.setResult(true);
+            resultData.setValue(null);
+            return resultData;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResultData resultData = new ResultData();
+            resultData.setResult(false);
+            resultData.setValue(null);
+            return resultData;
+        }
+    }
 }

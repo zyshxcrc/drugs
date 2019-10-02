@@ -90,4 +90,8 @@
             #{item}
         </foreach>
     </delete>
+
+    <delete id="deleteById">
+        DELETE FROM warehouse WHERE id = #{id}
+    </delete>
 </mapper>

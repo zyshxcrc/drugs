@@ -19,11 +19,13 @@ public interface InventoryMapper {
 
     int batchInsert(List<Inventory> list);
 
+    int insert(Inventory inventory);
+
     Inventory getInventoryByCode(String drugCode);
 
     Inventory getInventoryByDrugId(int drugId);
 
-    int updateInventory(String warehouseNum,String inventoryNum,int id);
+    int updateInventory(@Param("warehouseNum") String warehouseNum,@Param("inventoryNum") String inventoryNum,@Param("id") int id);
 
     int updateInventoryOutgoing(@Param("outgoingNum") String outgoingNum, @Param("inventoryNum") String inventoryNum, @Param("id") int id);
 

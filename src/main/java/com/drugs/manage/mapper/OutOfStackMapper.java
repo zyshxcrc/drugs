@@ -22,4 +22,6 @@ public interface OutOfStackMapper {
     OutOfStackReceiver getOutOfStackById(int id);
 
     int updateById(OutOfStack outOfStack);
+
+    int deleteById(int id);
 }
