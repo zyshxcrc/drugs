@@ -4,6 +4,7 @@
 
     <sql id="warehouseColumnsList">
         <trim suffixOverrides=",">
+            <if test="item.drugId != null">drugId,</if>
             <if test="item.drugCode != null">drugCode,</if>
             <if test="item.drugName != null">drugName,</if>
             <if test="item.drugModel != null">drugModel,</if>
@@ -19,6 +20,7 @@
     </sql>
     <sql id="warehouseValuesList">
         <trim suffixOverrides=",">
+            <if test="item.drugId != null">#{item.drugId},</if>
             <if test="item.drugCode != null">#{item.drugCode},</if>
             <if test="item.drugName != null">#{item.drugName},</if>
             <if test="item.drugModel != null">#{item.drugModel},</if>
